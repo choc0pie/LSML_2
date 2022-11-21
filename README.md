@@ -25,4 +25,19 @@
 Notebook with model training:  NartdinovKA_LSML_SGA_ResNetFineTuning.ipynb (Solved in Colab)
 
 ## Service deployment
-                         
+
+Server deployed as docker container.
+I used async solution for server based on celery library, because model pretty big and it might take a time for prediction.
+
+
+Library dependences: 
+- flask
+- celery
+- json
+- torch
+- cv2
+- torchvision
+
+
+- 
+                        
