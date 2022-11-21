@@ -3,10 +3,10 @@
 # Project: Bird classification
 
 ## Model
-Model: Fine-tuned ResNet50
-Dataset: https://www.kaggle.com/datasets/gpiosenka/100-bird-species
-Loss function: CrossEntropyLoss
-Optimizer: Adam optimizer with learning rate=0.0001
+- Model: Fine-tuned ResNet50
+- Dataset: https://www.kaggle.com/datasets/gpiosenka/100-bird-species
+- Loss function: CrossEntropyLoss
+- Optimizer: Adam optimizer with learning rate=0.0001
 
 ### Strategy
 1. Loaded pretrained ResNet50
