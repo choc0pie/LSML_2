@@ -38,7 +38,7 @@ Library requirments:
 - torchvision
 
 For successfull start you also need files with pretrained model and dictionary with labels:
-- birdResNet.pt
+- birdResNet.pt (https://drive.google.com/file/d/1-C5iD-IkrrYrzieYPJuEmCfgMXkxDmUS/view?usp=share_link)
 - class_to_label.json
                         
 ## API documentation
@@ -49,4 +49,5 @@ For successfull start you also need files with pretrained model and dictionary w
 2. GET /api/v1/get_prediction/<task_id>
     - No request_data, task_id specified in endpoint
     - Response data: "status", and if prediction is ready - "result
-- 
+
+
