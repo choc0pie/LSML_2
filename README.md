@@ -41,3 +41,12 @@ For successfull start you also need files with pretrained model and dictionary w
 - birdResNet.pt
 - class_to_label.json
                         
+## API documentation
+
+1. POST /api/v1/get_prediction
+    - request data: encoded image with cv2.imencode
+    - response data: json formatted with tag "task_id"
+2. GET /api/v1/get_prediction/<task_id>
+    - No request_data, task_id specified in endpoint
+    - Response data: "status", and if prediction is ready - "result
+- 
