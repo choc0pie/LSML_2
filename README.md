@@ -40,7 +40,12 @@ Library requirments:
 For successfull start you also need files with pretrained model and dictionary with labels:
 - birdResNet.pt (https://drive.google.com/file/d/1-C5iD-IkrrYrzieYPJuEmCfgMXkxDmUS/view?usp=share_link)
 - class_to_label.json
-                        
+
+Reproduce container with Dockerfile:
+1. docker build --tag python-docker .
+2. docker run -d -p 8000:8000 python-docker
+
+
 ## API documentation
 
 1. POST /api/v1/get_prediction
