@@ -26,18 +26,18 @@ Notebook with model training:  NartdinovKA_LSML_SGA_ResNetFineTuning.ipynb (Solv
 
 ## Service deployment
 
-Server deployed as docker container.
-I used async solution for server based on celery library, because model pretty big and it might take a time for prediction.
+Service deployed as docker container.
+I used async solution for server based on celery library.
 
 
-Library dependences: 
+Library requirments: 
 - flask
 - celery
-- json
 - torch
-- cv2
+- opencv-python
 - torchvision
 
-
-- 
+For successfull start you also need files with pretrained model and dictionary with labels:
+- birdResNet.pt
+- class_to_label.json
                         
