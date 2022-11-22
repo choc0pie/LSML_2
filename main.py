@@ -1,14 +1,12 @@
-from celery import Celery
-from celery.result import AsyncResult
 import time
 from flask import Flask, request
 import json
 import torch
-import numpy
+from torch import nn
+import numpy as np
 import cv2
 from torchvision import transforms, models
 
-celery_app = Celery('server', backend='redis://localhost', broker='redis://localhost')
 app = Flask('__name__')
 
 
@@ -25,13 +23,20 @@ def load_model(model_path):
     model.eval()
     return model
 
-model = load_model('birdResNet.pt')
-f = open('class_to_label.json')
+model = load_model('/app/birdResNet.pt')
+f = open('/app/class_to_label.json')
 class_to_label = json.load(f)
 
 
-@celery_app.task
-def predict(img):
+def predict(nparr):
+    image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    image = cv2.resize(image,(224,224), interpolation=cv2.INTER_CUBIC)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
+    image /= 255.0
+    image = image
+    convert_tensor = transforms.ToTensor()
+    image = convert_tensor(image)
+    image = torch.unsqueeze(image, 0)
     with torch.no_grad():
         out = model(image)
     class_id = int(torch.max(out,dim=1)[1][0])
@@ -39,41 +44,26 @@ def predict(img):
     return result
 
 
+@app.route('/check', methods=["GET", "POST"])
+def check_health():
+    if request.method == 'POST':       
+        response = {
+            "status": 'hello'
+        }
+        return json.dumps(response)
+
 @app.route('/api/v1/get_prediction', methods=["GET", "POST"])
 def get_prediction_handler():
     if request.method == 'POST':
         r = request
-        nparr = np.fromstring(r.data, np.uint8)
-        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        image = cv2.resize(img_tes,(224,224), interpolation=cv2.INTER_CUBIC)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
-        image /= 255.0
-        image = image
-        convert_tensor = transforms.ToTensor()
-        image = convert_tensor(image)
-        image = torch.unsqueeze(image, 0)
-       
-        task = predict.delay(image) 
-            
+        nparr = np.frombuffer(r.data, np.uint8)
+        result = predict(nparr) 
+
         response = {
-            "task_id": task.id
-        }
+        "result": result
+        }       
+        
         return json.dumps(response)
-    
-    
-@app.route('/api/v1/get_prediction/<task_id>')
-def get_prediction_check_handler(task_id):
-    task = AsyncResult(task_id, app=celery_app)
-    if task.ready():
-        response = {
-            "status": "DONE",
-            "result": task.result
-        }
-    else:
-        response = {
-            "status": "IN_PROGRESS"
-        }
-    return json.dumps(response)
 
 
 if __name__ == "__main__":
