@@ -47,7 +47,7 @@ Reproduce container with Dockerfile:
 
 
 ## API documentation
-
+host: localhost
 1. POST /api/v1/get_prediction
     - request data: encoded image with cv2.imencode
     - response data: json formatted with tag "task_id"
