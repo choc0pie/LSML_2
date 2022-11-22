@@ -43,15 +43,6 @@ def predict(nparr):
     result = class_to_label[str(class_id)]
     return result
 
-
-@app.route('/check', methods=["GET", "POST"])
-def check_health():
-    if request.method == 'POST':       
-        response = {
-            "status": 'hello'
-        }
-        return json.dumps(response)
-
 @app.route('/api/v1/get_prediction', methods=["GET", "POST"])
 def get_prediction_handler():
     if request.method == 'POST':
