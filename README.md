@@ -27,12 +27,11 @@ Notebook with model training:  NartdinovKA_LSML_SGA_ResNetFineTuning.ipynb (Solv
 ## Service deployment
 
 Service deployed as docker container.
-I used async solution for server based on celery library.
+I used sync solution for server based on flask library.
 
 
 Library requirments: 
 - flask
-- celery
 - torch
 - opencv-python
 - torchvision
@@ -50,9 +49,14 @@ Reproduce container with Dockerfile:
 host: localhost
 1. POST /api/v1/get_prediction
     - request data: encoded image with cv2.imencode
-    - response data: json formatted with tag "task_id"
-2. GET /api/v1/get_prediction/<task_id>
-    - No request_data, task_id specified in endpoint
-    - Response data: "status", and if prediction is ready - "result
+    - response data: json with tag 'result'
 
+Example of request:
+```python 
+import requests
+import cv2
 
+img = cv2.imread('002.jpg')
+_, img_encoded = cv2.imencode('.jpg', img)
+response = requests.post('http://localhost:8000/api/v1/get_prediction', data=img_encoded.tobytes())
+```
